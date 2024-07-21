@@ -14,8 +14,8 @@ export const ProfileImage = styled.Image(({ theme }) => ({
   borderWidth: 2,
 }));
 
-export const NewMealContainer = styled.View(() => ({
-  gap: 8,
+export const NewMealContainer = styled.View(({ theme }) => ({
+  gap: theme.SIZES.XXS,
 }));
 
 export const NewMealTitle = styled.Text(({ theme }) => ({

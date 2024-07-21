@@ -11,7 +11,7 @@ export const Container = styled.TouchableOpacity.attrs<ContainerProps>(() => ({
   alignItems: "center",
   justifyContent: "center",
   gap: theme.SIZES.XS,
-  borderRadius: 8,
+  borderRadius: theme.SIZES.XXS,
   backgroundColor:
     variant === "primary"
       ? theme.COLORS.BASE.GRAY_200
@@ -29,5 +29,5 @@ export const Text = styled.Text<Variant>(({ theme, variant }) => ({
     variant === "primary"
       ? theme.COLORS.BASE.WHITE
       : theme.COLORS.BASE.GRAY_100,
-  fontWeight: theme.FONT_FAMILIES.BOLD,
+  fontFamily: theme.FONT_FAMILIES.BOLD,
 }));

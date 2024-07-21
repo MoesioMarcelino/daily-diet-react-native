@@ -26,6 +26,7 @@ export const theme = {
     BOLD: "Nunito_700Bold",
   },
   SIZES: {
+    XXS: 8,
     XS: 12,
     SM: 14,
     MD: 16,
