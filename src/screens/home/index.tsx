@@ -1,4 +1,4 @@
-import { Container } from "@components";
+import { Container, Result } from "@components";
 import { Image } from "react-native";
 import { HeaderContainer, ProfileImage } from "./styles";
 
@@ -15,6 +15,8 @@ export function Home() {
           }}
         />
       </HeaderContainer>
+
+      <Result />
     </Container>
   );
 }
