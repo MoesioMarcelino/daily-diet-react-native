@@ -13,3 +13,12 @@ export const ProfileImage = styled.Image(({ theme }) => ({
   borderColor: theme.COLORS.BASE.GRAY_200,
   borderWidth: 2,
 }));
+
+export const NewMealContainer = styled.View(() => ({
+  gap: 8,
+}));
+
+export const NewMealTitle = styled.Text(({ theme }) => ({
+  fontSize: theme.SIZES.MD,
+  color: theme.COLORS.BASE.GRAY_100,
+}));

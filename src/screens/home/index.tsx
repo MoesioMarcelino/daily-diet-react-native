@@ -1,6 +1,11 @@
-import { Container, Result } from "@components";
+import { Button, Container, Result } from "@components";
 import { Image } from "react-native";
-import { HeaderContainer, ProfileImage } from "./styles";
+import {
+  HeaderContainer,
+  NewMealContainer,
+  NewMealTitle,
+  ProfileImage,
+} from "./styles";
 
 import logoImg from "@assets/logo.png";
 
@@ -17,6 +22,11 @@ export function Home() {
       </HeaderContainer>
 
       <Result />
+
+      <NewMealContainer>
+        <NewMealTitle>Refeições</NewMealTitle>
+        <Button label="Nova refeição" icon="plus" />
+      </NewMealContainer>
     </Container>
   );
 }

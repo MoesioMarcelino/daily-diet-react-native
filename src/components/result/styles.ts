@@ -4,7 +4,7 @@ import { ResultProps } from ".";
 
 export const Container = styled.View<ResultProps>(({ theme, variant }) => ({
   padding: theme.SIZES.XS,
-  paddingBottom: theme.SIZES.XL,
+  paddingBottom: theme.SIZES.XXL,
   backgroundColor:
     variant === "success" ? theme.COLORS.GREEN.LIGHT : theme.COLORS.RED.LIGHT,
   justifyContent: "center",
@@ -16,15 +16,19 @@ export const LinkContainer = styled.View(({ theme }) => ({
   justifyContent: "end",
 }));
 
+export const IconTouchable = styled.TouchableOpacity.attrs(() => ({
+  activeOpacity: 0.5,
+}))(() => ({
+  marginLeft: "auto",
+}));
+
 export const Icon = styled(ArrowUpRight).attrs<{
   variant: ResultProps["variant"];
 }>(({ theme, variant }) => ({
   size: theme.SIZES.XL,
   color:
     variant === "success" ? theme.COLORS.GREEN.DARK : theme.COLORS.RED.DARK,
-}))(() => ({
-  marginLeft: "auto",
-}));
+}))(() => ({}));
 
 export const Title = styled.Text(({ theme }) => ({
   fontFamily: theme.FONT_FAMILIES.BOLD,
