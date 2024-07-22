@@ -1,5 +1,5 @@
 import styled from "styled-components/native";
-import { ButtonProps, Variant } from ".";
+import { ButtonProps } from ".";
 
 type ContainerProps = Omit<ButtonProps, "label">;
 
@@ -24,10 +24,12 @@ export const Container = styled.TouchableOpacity.attrs<ContainerProps>(() => ({
   borderWidth: 1,
 }));
 
-export const Text = styled.Text<Variant>(({ theme, variant }) => ({
-  color:
-    variant === "primary"
-      ? theme.COLORS.BASE.WHITE
-      : theme.COLORS.BASE.GRAY_100,
-  fontFamily: theme.FONT_FAMILIES.BOLD,
-}));
+export const Text = styled.Text<{ variant: ButtonProps["variant"] }>(
+  ({ theme, variant }) => ({
+    color:
+      variant === "primary"
+        ? theme.COLORS.BASE.WHITE
+        : theme.COLORS.BASE.GRAY_100,
+    fontFamily: theme.FONT_FAMILIES.BOLD,
+  })
+);

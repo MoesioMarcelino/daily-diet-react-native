@@ -1,6 +1,7 @@
 import {
   Button,
   Container,
+  Header,
   MealGroup,
   MealGroupComponent,
   Result,
@@ -14,6 +15,7 @@ import {
 } from "./styles";
 
 import logoImg from "@assets/logo.png";
+import { useNavigation } from "@react-navigation/native";
 
 const mealList = ["12.08.22", "11.08.22"];
 
@@ -61,34 +63,47 @@ const meals: MealGroup[] = mealList.map((title) => ({
 }));
 
 export function Home() {
+  const navigation = useNavigation();
+
+  function handleCreateNewMeal() {
+    navigation.navigate("new-meal");
+  }
+
   return (
-    <Container safeArea>
-      <HeaderContainer>
-        <Image source={logoImg} />
-        <ProfileImage
-          source={{
-            uri: "https://github.com/moesiomarcelino.png",
-          }}
+    <>
+      <Header variant="hidden" />
+      <Container>
+        <HeaderContainer>
+          <Image source={logoImg} />
+          <ProfileImage
+            source={{
+              uri: "https://github.com/moesiomarcelino.png",
+            }}
+          />
+        </HeaderContainer>
+
+        <Result />
+
+        <NewMealContainer>
+          <NewMealTitle>Refeições</NewMealTitle>
+          <Button
+            label="Nova refeição"
+            icon="plus"
+            onPress={handleCreateNewMeal}
+          />
+        </NewMealContainer>
+
+        <FlatList
+          data={meals}
+          keyExtractor={(item) => item.title}
+          renderItem={({ item: { title, meals } }) => (
+            <MealGroupComponent title={title} meals={meals} />
+          )}
+          contentContainerStyle={{ gap: 20 }}
+          showsVerticalScrollIndicator={false}
+          scrollEnabled
         />
-      </HeaderContainer>
-
-      <Result />
-
-      <NewMealContainer>
-        <NewMealTitle>Refeições</NewMealTitle>
-        <Button label="Nova refeição" icon="plus" />
-      </NewMealContainer>
-
-      <FlatList
-        data={meals}
-        keyExtractor={(item) => item.title}
-        renderItem={({ item: { title, meals } }) => (
-          <MealGroupComponent title={title} meals={meals} />
-        )}
-        contentContainerStyle={{ gap: 20 }}
-        showsVerticalScrollIndicator={false}
-        scrollEnabled
-      />
-    </Container>
+      </Container>
+    </>
   );
 }

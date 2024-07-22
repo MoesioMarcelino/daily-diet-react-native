@@ -1,36 +1,28 @@
-import { ReportCard } from "@components";
+import { Container, Header, ReportCard } from "@components";
 import { useNavigation } from "@react-navigation/native";
 import { View } from "react-native";
-import {
-  ContainerStyled,
-  GoBackIcon,
-  GoBackTouchableArea,
-  ReportContainer,
-  Subtitle,
-  Title,
-} from "./styles";
+import { useTheme } from "styled-components/native";
+import { ContainerStyled, Subtitle, Title } from "./styles";
 
-export function Results(props: any) {
+export function Results() {
   const navigation = useNavigation();
-
-  function handleGoHome() {
-    navigation.navigate("home");
-  }
+  const { SIZES } = useTheme();
 
   const mealsPercentage = 90.87;
   const scenario = mealsPercentage >= 85 ? "success" : "failure";
 
+  function handleGoBack() {
+    navigation.navigate("home");
+  }
+
   return (
     <>
+      <Header variant={scenario} onGoBack={handleGoBack} />
       <ContainerStyled variant={scenario}>
-        <GoBackTouchableArea onPress={handleGoHome}>
-          <GoBackIcon variant={scenario} />
-        </GoBackTouchableArea>
-
         <Title>{String(mealsPercentage).replace(".", ",")}%</Title>
         <Subtitle>das refeições dentro da dieta</Subtitle>
       </ContainerStyled>
-      <ReportContainer>
+      <Container style={{ gap: SIZES.XS }}>
         <ReportCard
           title={22}
           subtitle="melhor sequência de pratos dentro da dieta"
@@ -54,7 +46,7 @@ export function Results(props: any) {
             variant="secondary"
           />
         </View>
-      </ReportContainer>
+      </Container>
     </>
   );
 }

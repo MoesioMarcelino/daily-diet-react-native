@@ -3,7 +3,7 @@ import { TouchableOpacityProps } from "react-native";
 import { useTheme } from "styled-components/native";
 import { Container, Text } from "./styles";
 
-export type Variant = { variant?: "primary" | "secondary" };
+type Variant = { variant?: "primary" | "secondary" };
 export type ButtonIcon = "plus";
 
 export type ButtonProps = {
