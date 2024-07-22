@@ -2,7 +2,9 @@ import { ArrowUpRight } from "phosphor-react-native";
 import styled from "styled-components/native";
 import { ResultProps } from ".";
 
-export const Container = styled.View<ResultProps>(({ theme, variant }) => ({
+export const Container = styled.TouchableOpacity.attrs(() => ({
+  activeOpacity: 0.5,
+}))<ResultProps>(({ theme, variant }) => ({
   padding: theme.SIZES.XS,
   paddingBottom: theme.SIZES.XXL,
   backgroundColor:
@@ -12,23 +14,13 @@ export const Container = styled.View<ResultProps>(({ theme, variant }) => ({
   borderRadius: theme.SIZES.XS,
 }));
 
-export const LinkContainer = styled.View(({ theme }) => ({
-  justifyContent: "end",
-}));
-
-export const IconTouchable = styled.TouchableOpacity.attrs(() => ({
-  activeOpacity: 0.5,
-}))(() => ({
-  marginLeft: "auto",
-}));
-
 export const Icon = styled(ArrowUpRight).attrs<{
   variant: ResultProps["variant"];
 }>(({ theme, variant }) => ({
   size: theme.SIZES.XL,
   color:
     variant === "success" ? theme.COLORS.GREEN.DARK : theme.COLORS.RED.DARK,
-}))(() => ({}));
+}))(() => ({ marginLeft: "auto" }));
 
 export const Title = styled.Text(({ theme }) => ({
   fontFamily: theme.FONT_FAMILIES.BOLD,

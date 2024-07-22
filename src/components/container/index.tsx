@@ -2,11 +2,15 @@ import { ViewProps } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ContainerStyled } from "./styles";
 
-export function Container(props: ViewProps) {
+type ContainerProps = {
+  safeArea?: boolean;
+} & ViewProps;
+
+export function Container({ safeArea = false, ...rest }: ContainerProps) {
   return (
     <>
-      <SafeAreaView />
-      <ContainerStyled {...props} />
+      {safeArea && <SafeAreaView />}
+      <ContainerStyled {...rest} />
     </>
   );
 }

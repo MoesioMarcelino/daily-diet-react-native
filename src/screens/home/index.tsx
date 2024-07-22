@@ -62,7 +62,7 @@ const meals: MealGroup[] = mealList.map((title) => ({
 
 export function Home() {
   return (
-    <Container>
+    <Container safeArea>
       <HeaderContainer>
         <Image source={logoImg} />
         <ProfileImage
