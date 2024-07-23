@@ -15,17 +15,16 @@ import {
 } from "./styles";
 
 import logoImg from "@assets/logo.png";
-import { MealGroup } from "@models";
+import { MealGroup, MealResult } from "@models";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { getAllMeals } from "@storage";
-import { calculateDietStats } from "@utils";
+import { getAllMeals, getMealDetails } from "@storage";
 import { useCallback, useState } from "react";
 
 export function Home() {
   const navigation = useNavigation();
 
   const [meals, setMeals] = useState<MealGroup[]>([]);
-  const [result, setResult] = useState<number>();
+  const [result, setResult] = useState<MealResult>();
 
   function handleCreateNewMeal() {
     navigation.navigate("create-meal");
@@ -35,7 +34,8 @@ export function Home() {
     try {
       const mealsStoraged = await getAllMeals();
       setMeals(mealsStoraged);
-      setResult(calculateDietStats(mealsStoraged));
+      const mealDetails = await getMealDetails(mealsStoraged);
+      setResult(mealDetails);
     } catch (error) {
       console.error(error);
     }
@@ -46,8 +46,6 @@ export function Home() {
       fetchMeals();
     }, [])
   );
-
-  console.log("meals", JSON.stringify(meals));
 
   return (
     <>
@@ -64,7 +62,7 @@ export function Home() {
           </TouchableOpacity>
         </HeaderContainer>
 
-        {meals.length > 0 && result && <Result result={result} />}
+        {meals.length > 0 && result && <Result {...result} />}
 
         <NewMealContainer>
           {meals.length > 0 && <NewMealTitle>Refeições</NewMealTitle>}

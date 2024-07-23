@@ -1,6 +1,6 @@
-import { Meal, MealGroup } from "@models";
+import { Meal, MealGroup, MealResult, Variant } from "@models";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { sortMealGroups } from "@utils";
+import { calculateDietStats, sortMealGroups } from "@utils";
 import uuid from "react-native-uuid";
 import { MEALS_COLLECTION } from "../contants";
 
@@ -59,6 +59,49 @@ export async function createMeal(meal: Omit<Meal, "id">) {
 
       await AsyncStorage.setItem(MEALS_COLLECTION, JSON.stringify(newMealList));
     }
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getMealDetails(): Promise<MealResult> {
+  try {
+    const meals = await getAllMeals();
+    const { total, totalInDiet, totalOutDiet } = meals.reduce(
+      (acc, group) => {
+        const { totalMeals, inDietCount, outDietCount } = group.meals.reduce(
+          (mealAcc, meal) => {
+            mealAcc.totalMeals++;
+            if (meal.inDiet) {
+              mealAcc.inDietCount++;
+            } else {
+              mealAcc.outDietCount++;
+            }
+            return mealAcc;
+          },
+          { totalMeals: 0, inDietCount: 0, outDietCount: 0 }
+        );
+
+        acc.total += totalMeals;
+        acc.totalInDiet += inDietCount;
+        acc.totalOutDiet += outDietCount;
+
+        return acc;
+      },
+      { total: 0, totalInDiet: 0, totalOutDiet: 0 }
+    );
+
+    const percentage = calculateDietStats(meals);
+    const variant: Variant = percentage >= 70 ? "success" : "failure";
+
+    return {
+      total,
+      totalInDiet,
+      totalOutDiet,
+      percentage,
+      variant,
+      meals,
+    };
   } catch (error) {
     throw error;
   }

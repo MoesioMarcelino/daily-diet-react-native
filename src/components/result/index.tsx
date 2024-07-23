@@ -1,13 +1,12 @@
+import { MealResult } from "@models";
 import { useNavigation } from "@react-navigation/native";
 import { ViewProps } from "react-native";
 import { Container, Icon, Subtitle, Title } from "./styles";
 
-export type ResultProps = { result: number } & ViewProps;
+export type ResultProps = MealResult & ViewProps;
 
-export function Result({ result, ...rest }: ResultProps) {
+export function Result({ percentage, variant, ...rest }: ResultProps) {
   const navigation = useNavigation();
-
-  const variant = result >= 70 ? "success" : "failure";
 
   function handleGoToResults() {
     navigation.navigate("results");
@@ -16,7 +15,7 @@ export function Result({ result, ...rest }: ResultProps) {
   return (
     <Container variant={variant} onPress={handleGoToResults} {...rest}>
       <Icon variant={variant} />
-      <Title>{result}%</Title>
+      <Title>{percentage}%</Title>
       <Subtitle>das refeições dentro da dieta</Subtitle>
     </Container>
   );

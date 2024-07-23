@@ -5,7 +5,7 @@ import { ResultProps } from ".";
 
 export const Container = styled.TouchableOpacity.attrs(() => ({
   activeOpacity: 0.5,
-}))<Omit<ResultProps, "result"> & { variant: Variant }>(
+}))<Pick<ResultProps, "variant"> & { variant: Variant }>(
   ({ theme, variant }) => ({
     padding: theme.SIZES.XS,
     paddingBottom: theme.SIZES.XXL,

@@ -1,8 +1,9 @@
 import { Container as ContainerComponent } from "@components";
+import { Variant } from "@models";
 import styled from "styled-components/native";
 
 export const ContainerStyled = styled(ContainerComponent)<{
-  variant: "success" | "failure";
+  variant: Variant;
 }>(({ theme, variant }) => ({
   backgroundColor:
     variant === "success" ? theme.COLORS.GREEN.LIGHT : theme.COLORS.RED.LIGHT,
