@@ -1,8 +1,6 @@
-import {
-  Button as ButtonComponent,
-  Container as ContainerComponent,
-} from "@components";
 import styled from "styled-components/native";
+import { Button as ButtonComponent } from "../button";
+import { Container as ContainerComponent } from "../container";
 
 export const Container = styled(ContainerComponent)(() => ({
   justifyContent: "center",

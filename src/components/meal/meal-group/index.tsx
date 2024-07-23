@@ -1,16 +1,16 @@
+import { MealGroup } from "@models";
 import { useNavigation } from "@react-navigation/native";
 import { ViewProps } from "react-native";
-import { Meal, MealCard } from "../meal-card";
+import { MealCard } from "../meal-card";
 import { Container, Title } from "./styles";
-
-export type MealGroup = {
-  title: string;
-  meals: Meal[];
-};
 
 export type MealGroupProps = MealGroup & ViewProps;
 
-export function MealGroupComponent({ title, meals, ...rest }: MealGroupProps) {
+export function MealGroupComponent({
+  date: title,
+  meals,
+  ...rest
+}: MealGroupProps) {
   const navigation = useNavigation();
 
   function handleViewMeal(mealId: string) {

@@ -22,3 +22,7 @@ export const NewMealTitle = styled.Text(({ theme }) => ({
   fontSize: theme.SIZES.MD,
   color: theme.COLORS.BASE.GRAY_100,
 }));
+
+export const ListMealsEmptyText = styled.Text(({ theme }) => ({
+  fontSize: theme.SIZES.MD,
+}));

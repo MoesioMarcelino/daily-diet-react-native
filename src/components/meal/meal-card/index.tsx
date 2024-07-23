@@ -1,3 +1,4 @@
+import { Meal } from "@models";
 import { TouchableOpacityProps } from "react-native";
 import {
   Container,
@@ -7,13 +8,6 @@ import {
   Time,
   Title,
 } from "./styles";
-
-export type Meal = {
-  id: string;
-  time: string;
-  title: string;
-  isInDiet: boolean;
-};
 
 export type MealCardProps = Meal & TouchableOpacityProps;
 
