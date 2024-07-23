@@ -7,14 +7,21 @@ import {
   Input,
 } from "@components";
 import { useNavigation } from "@react-navigation/native";
+import { formatDateToDDMMYYYY, formatTimeToHHMM } from "@utils";
 import { useState } from "react";
 import { View } from "react-native";
 import { IsInDietLabel } from "./styles";
 
-export function NewMeal() {
+export function CreateMeal() {
   const navigation = useNavigation();
 
-  const [isInDiet, setIsInDiet] = useState(true);
+  const [formulary, setFormulary] = useState({
+    name: "",
+    description: "",
+    date: "",
+    time: "",
+    inDiet: true,
+  });
 
   function handleGoBack() {
     navigation.navigate("home");
@@ -22,9 +29,28 @@ export function NewMeal() {
 
   function handleSaveMeal() {
     navigation.navigate("register-meal-done", {
-      variant: isInDiet ? "success" : "failure",
+      variant: formulary.inDiet ? "success" : "failure",
     });
   }
+
+  function changeFormularyValue(
+    key: keyof typeof formulary,
+    value: string | boolean
+  ) {
+    setFormulary((oldFormulary) => ({ ...oldFormulary, ...{ [key]: value } }));
+  }
+
+  function handleChangeDatePicker(field: "date" | "time", date = new Date()) {
+    if (field === "date") {
+      const valueFormatted = formatDateToDDMMYYYY(date);
+      changeFormularyValue(field, valueFormatted);
+    } else {
+      const valueFormatted = formatTimeToHHMM(date);
+      changeFormularyValue(field, valueFormatted);
+    }
+  }
+
+  console.log("formulary", formulary);
 
   return (
     <>
@@ -32,29 +58,33 @@ export function NewMeal() {
       <Container style={{ gap: 24 }}>
         <Input
           label="Nome"
-          autoCapitalize="words"
+          autoCapitalize="sentences"
           autoCorrect={false}
           enterKeyHint="next"
+          value={formulary.name}
+          onChangeText={(text) => changeFormularyValue("name", text)}
         />
         <Input
           label="Descrição"
           numberOfLines={5}
           multiline
           style={{ textAlignVertical: "top" }}
+          value={formulary.description}
+          onChangeText={(text) => changeFormularyValue("description", text)}
         />
 
         <View style={{ flexDirection: "row", gap: 16 }}>
           <DatePicker
             label="Data"
             mode="date"
-            value={new Date()}
-            valueFormatted="12/08/2022"
+            valueFormatted={formulary.date}
+            onChange={(date) => handleChangeDatePicker("date", date)}
           />
           <DatePicker
             label="Hora"
             mode="time"
-            value={new Date()}
-            valueFormatted="16:00"
+            valueFormatted={formulary.time}
+            onChange={(date) => handleChangeDatePicker("time", date)}
           />
         </View>
 
@@ -64,14 +94,14 @@ export function NewMeal() {
             <BadgeCard
               label="Sim"
               variant="success"
-              selected={isInDiet}
-              onPress={() => setIsInDiet(true)}
+              selected={formulary.inDiet}
+              onPress={() => changeFormularyValue("inDiet", true)}
             />
             <BadgeCard
               label="Não"
               variant="failure"
-              selected={!isInDiet}
-              onPress={() => setIsInDiet(false)}
+              selected={!formulary.inDiet}
+              onPress={() => changeFormularyValue("inDiet", false)}
             />
           </View>
         </View>

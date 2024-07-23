@@ -1,21 +1,19 @@
-import DateTimePicker, {
-  DatePickerOptions,
-  DateTimePickerEvent,
-} from "@react-native-community/datetimepicker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { useState } from "react";
+import { Keyboard } from "react-native";
 import { Container, Label, Value, ValueContainer } from "./styles";
 
 type DateTimePickerType = "date" | "time";
 
-type DatePickerProps = DatePickerOptions & {
+type DatePickerProps = {
   label: string;
   valueFormatted: string;
   mode: DateTimePickerType;
+  onChange: (date?: Date) => void;
 };
 
 export function DatePicker({
   label,
-  value = new Date(),
   onChange,
   mode = "date",
   valueFormatted,
@@ -23,9 +21,14 @@ export function DatePicker({
 }: DatePickerProps) {
   const [show, setShow] = useState(false);
 
-  function handleChange(event: DateTimePickerEvent, selectedDate?: Date) {
-    onChange && onChange(event, selectedDate);
+  function handleChange(selectedDate?: Date) {
+    onChange && onChange(selectedDate);
     setShow(false);
+  }
+
+  function handlePressInput() {
+    Keyboard.dismiss();
+    setShow(true);
   }
 
   return (
@@ -35,15 +38,15 @@ export function DatePicker({
       {show && (
         <DateTimePicker
           testID="dateTimePicker"
-          value={value}
+          value={new Date()}
           mode={mode}
           is24Hour={true}
-          onChange={handleChange}
+          onChange={(_, date) => handleChange(date)}
           {...rest}
         />
       )}
 
-      <ValueContainer onPress={() => setShow(true)}>
+      <ValueContainer onPress={handlePressInput}>
         <Value>{valueFormatted}</Value>
       </ValueContainer>
     </Container>

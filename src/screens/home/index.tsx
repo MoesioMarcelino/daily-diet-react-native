@@ -26,7 +26,7 @@ export function Home() {
   const [meals, setMeals] = useState<MealGroup[]>([]);
 
   function handleCreateNewMeal() {
-    navigation.navigate("new-meal");
+    navigation.navigate("create-meal");
   }
 
   async function fetchMeals() {

@@ -3,7 +3,7 @@ export declare global {
     interface RootParamList {
       home: undefined;
       results: undefined;
-      "new-meal": undefined;
+      "create-meal": undefined;
       "view-meal": { mealId: string };
       "edit-meal": { mealId: string };
       "register-meal-done": { variant: "success" | "failure" };
