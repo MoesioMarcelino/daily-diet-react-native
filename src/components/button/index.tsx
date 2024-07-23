@@ -4,7 +4,7 @@ import { useTheme } from "styled-components/native";
 import { Container, Text } from "./styles";
 
 type Variant = { variant?: "primary" | "secondary" };
-export type ButtonIcon = "plus";
+export type ButtonIcon = "plus" | "edit" | "trash";
 
 export type ButtonProps = {
   label: string;
@@ -28,6 +28,16 @@ export function Button({
     switch (icon) {
       case "plus":
         return <PhophorIcon.Plus size={size} color={color} weight="bold" />;
+      case "edit":
+        return (
+          <PhophorIcon.PencilSimpleLine
+            size={size}
+            color={color}
+            weight="bold"
+          />
+        );
+      case "trash":
+        return <PhophorIcon.Trash size={size} color={color} weight="bold" />;
       default:
         return null;
     }

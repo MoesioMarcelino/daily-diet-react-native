@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { ViewProps } from "react-native";
 import { Meal, MealCard } from "../meal-card";
 import { Container, Title } from "./styles";
@@ -10,6 +11,14 @@ export type MealGroup = {
 export type MealGroupProps = MealGroup & ViewProps;
 
 export function MealGroupComponent({ title, meals, ...rest }: MealGroupProps) {
+  const navigation = useNavigation();
+
+  function handleViewMeal(mealId: string) {
+    navigation.navigate("view-meal", {
+      mealId,
+    });
+  }
+
   return (
     <Container {...rest}>
       <Title>{title}</Title>
@@ -21,6 +30,7 @@ export function MealGroupComponent({ title, meals, ...rest }: MealGroupProps) {
           isInDiet={isInDiet}
           time={time}
           title={title}
+          onPress={() => handleViewMeal(id)}
         />
       ))}
     </Container>

@@ -6,7 +6,7 @@ import {
   MealGroupComponent,
   Result,
 } from "@components";
-import { FlatList, Image } from "react-native";
+import { FlatList, Image, TouchableOpacity } from "react-native";
 import {
   HeaderContainer,
   NewMealContainer,
@@ -75,11 +75,13 @@ export function Home() {
       <Container>
         <HeaderContainer>
           <Image source={logoImg} />
-          <ProfileImage
-            source={{
-              uri: "https://github.com/moesiomarcelino.png",
-            }}
-          />
+          <TouchableOpacity>
+            <ProfileImage
+              source={{
+                uri: "https://github.com/moesiomarcelino.png",
+              }}
+            />
+          </TouchableOpacity>
         </HeaderContainer>
 
         <Result />

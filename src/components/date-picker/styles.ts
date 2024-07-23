@@ -22,4 +22,7 @@ export const ValueContainer = styled.TouchableOpacity.attrs(() => ({
   fontSize: theme.SIZES.MD,
 }));
 
-export const Value = styled.Text(({ theme }) => ({}));
+export const Value = styled.Text(({ theme }) => ({
+  fontSize: theme.SIZES.MD,
+  color: theme.COLORS.BASE.GRAY_100,
+}));

@@ -6,5 +6,6 @@ export * from "./header";
 export * from "./input";
 export * from "./loader";
 export * from "./meal";
+export * from "./modal";
 export * from "./report-card";
 export * from "./result";
