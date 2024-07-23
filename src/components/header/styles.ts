@@ -5,10 +5,15 @@ import { Variant } from ".";
 
 type ContainerProps = ViewProps & { variant: Variant };
 
+export const EmptyContainer = styled.View(() => ({
+  paddingTop: 40,
+}));
+
 export const Container = styled.View<ContainerProps>(({ theme, variant }) => ({
   flexDirection: "row",
   alignItems: "center",
   padding: theme.SIZES.XL,
+  paddingTop: 60,
   backgroundColor:
     variant === "success"
       ? theme.COLORS.GREEN.LIGHT

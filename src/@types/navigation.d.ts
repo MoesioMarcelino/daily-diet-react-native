@@ -4,6 +4,7 @@ export declare global {
       home: undefined;
       results: undefined;
       "new-meal": undefined;
+      "register-meal-done": { variant: "success" | "failure" };
     }
   }
 }

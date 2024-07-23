@@ -21,7 +21,9 @@ export function NewMeal() {
   }
 
   function handleSaveMeal() {
-    navigation.navigate("home");
+    navigation.navigate("register-meal-done", {
+      variant: isInDiet ? "success" : "failure",
+    });
   }
 
   return (
