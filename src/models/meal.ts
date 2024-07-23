@@ -1,6 +1,8 @@
 export type Meal = {
   id: string;
+  date: string;
   time: string;
-  title: string;
-  isInDiet: boolean;
+  name: string;
+  description: string;
+  inDiet: boolean;
 };

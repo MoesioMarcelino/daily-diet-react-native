@@ -12,3 +12,10 @@ export function formatTimeToHHMM(date: Date): string {
 
   return `${hours}:${minutes}`;
 }
+
+export function formatDateToDDMMYY(date: string) {
+  const [day, month, yyyy] = date.split("/");
+  const [, , y, yy] = yyyy.split("");
+  const year = `${y}${yy}`;
+  return `${day}.${month}.${year}`;
+}

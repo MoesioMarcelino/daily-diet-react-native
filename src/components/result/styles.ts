@@ -1,21 +1,24 @@
+import { Variant } from "@models";
 import { ArrowUpRight } from "phosphor-react-native";
 import styled from "styled-components/native";
 import { ResultProps } from ".";
 
 export const Container = styled.TouchableOpacity.attrs(() => ({
   activeOpacity: 0.5,
-}))<ResultProps>(({ theme, variant }) => ({
-  padding: theme.SIZES.XS,
-  paddingBottom: theme.SIZES.XXL,
-  backgroundColor:
-    variant === "success" ? theme.COLORS.GREEN.LIGHT : theme.COLORS.RED.LIGHT,
-  justifyContent: "center",
-  alignItems: "center",
-  borderRadius: theme.SIZES.XS,
-}));
+}))<Omit<ResultProps, "result"> & { variant: Variant }>(
+  ({ theme, variant }) => ({
+    padding: theme.SIZES.XS,
+    paddingBottom: theme.SIZES.XXL,
+    backgroundColor:
+      variant === "success" ? theme.COLORS.GREEN.LIGHT : theme.COLORS.RED.LIGHT,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: theme.SIZES.XS,
+  })
+);
 
 export const Icon = styled(ArrowUpRight).attrs<{
-  variant: ResultProps["variant"];
+  variant: Variant;
 }>(({ theme, variant }) => ({
   size: theme.SIZES.XL,
   color:

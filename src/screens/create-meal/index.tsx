@@ -6,31 +6,27 @@ import {
   Header,
   Input,
 } from "@components";
+import { Meal } from "@models";
 import { useNavigation } from "@react-navigation/native";
-import { formatDateToDDMMYYYY, formatTimeToHHMM } from "@utils";
+import { createMeal } from "@storage";
+import { AppError, formatDateToDDMMYYYY, formatTimeToHHMM } from "@utils";
 import { useState } from "react";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 import { IsInDietLabel } from "./styles";
 
 export function CreateMeal() {
   const navigation = useNavigation();
 
-  const [formulary, setFormulary] = useState({
+  const [formulary, setFormulary] = useState<Omit<Meal, "id">>({
     name: "",
     description: "",
-    date: "",
-    time: "",
+    date: formatDateToDDMMYYYY(new Date()),
+    time: formatTimeToHHMM(new Date()),
     inDiet: true,
   });
 
   function handleGoBack() {
     navigation.navigate("home");
-  }
-
-  function handleSaveMeal() {
-    navigation.navigate("register-meal-done", {
-      variant: formulary.inDiet ? "success" : "failure",
-    });
   }
 
   function changeFormularyValue(
@@ -50,7 +46,46 @@ export function CreateMeal() {
     }
   }
 
-  console.log("formulary", formulary);
+  function validateFormularyBeforeSave() {
+    const { name, description, date, time } = formulary;
+    if (!name.trim().length) {
+      throw new AppError("O campo nome é obrigatório!");
+    }
+
+    if (!description.trim().length) {
+      throw new AppError("O campo descrição é obrigatório!");
+    }
+
+    if (!date.trim().length) {
+      throw new AppError("O campo data é obrigatório!");
+    }
+
+    if (!time.trim().length) {
+      throw new AppError("O campo hora é obrigatório!");
+    }
+  }
+
+  async function handleSaveMeal() {
+    try {
+      validateFormularyBeforeSave();
+
+      await createMeal(formulary);
+
+      navigation.navigate("register-meal-done", {
+        variant: formulary.inDiet ? "success" : "failure",
+      });
+    } catch (error) {
+      if (error instanceof AppError) {
+        Alert.alert("Nova refeição", error.message);
+      } else {
+        Alert.alert(
+          "Nova refeição",
+          "Erro ao tentar criar a nova refeição, verique o formulário preenchido e tente novamente."
+        );
+        console.log(error);
+      }
+    }
+  }
 
   return (
     <>

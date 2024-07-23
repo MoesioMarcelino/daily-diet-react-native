@@ -1,5 +1,5 @@
+import { Meal } from "@models";
 import styled from "styled-components/native";
-import { MealCardProps } from ".";
 
 export const Container = styled.TouchableOpacity.attrs(() => ({
   activeOpacity: 0.5,
@@ -35,8 +35,8 @@ export const Title = styled.Text(({ theme }) => ({
   maxWidth: 220,
 }));
 
-export const Status = styled.View<{ isInDiet: MealCardProps["isInDiet"] }>(
-  ({ theme, isInDiet }) => ({
+export const Status = styled.View<{ inDiet: Meal["inDiet"] }>(
+  ({ theme, inDiet: isInDiet }) => ({
     height: theme.SIZES.SM,
     width: theme.SIZES.SM,
     backgroundColor: isInDiet ? theme.COLORS.GREEN.MID : theme.COLORS.RED.MID,

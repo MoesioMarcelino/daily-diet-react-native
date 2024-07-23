@@ -18,12 +18,14 @@ import logoImg from "@assets/logo.png";
 import { MealGroup } from "@models";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { getAllMeals } from "@storage";
+import { calculateDietStats } from "@utils";
 import { useCallback, useState } from "react";
 
 export function Home() {
   const navigation = useNavigation();
 
   const [meals, setMeals] = useState<MealGroup[]>([]);
+  const [result, setResult] = useState<number>();
 
   function handleCreateNewMeal() {
     navigation.navigate("create-meal");
@@ -33,6 +35,7 @@ export function Home() {
     try {
       const mealsStoraged = await getAllMeals();
       setMeals(mealsStoraged);
+      setResult(calculateDietStats(mealsStoraged));
     } catch (error) {
       console.error(error);
     }
@@ -43,6 +46,8 @@ export function Home() {
       fetchMeals();
     }, [])
   );
+
+  console.log("meals", JSON.stringify(meals));
 
   return (
     <>
@@ -59,7 +64,7 @@ export function Home() {
           </TouchableOpacity>
         </HeaderContainer>
 
-        {meals.length > 0 && <Result />}
+        {meals.length > 0 && result && <Result result={result} />}
 
         <NewMealContainer>
           {meals.length > 0 && <NewMealTitle>Refeições</NewMealTitle>}
@@ -73,11 +78,12 @@ export function Home() {
         <FlatList
           data={meals}
           keyExtractor={(item) => item.date}
-          renderItem={({ item: { date: title, meals } }) => (
-            <MealGroupComponent date={title} meals={meals} />
+          renderItem={({ item: mealGroup }) => (
+            <MealGroupComponent {...mealGroup} />
           )}
           contentContainerStyle={{
             gap: 20,
+            paddingBottom: 40,
             ...(!meals.length && {
               justifyContent: "center",
               alignItems: "center",
