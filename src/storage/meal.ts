@@ -112,7 +112,7 @@ export async function getMealById(date: string, mealId: string): Promise<Meal> {
     const mealGroup = await getMealByDate(date);
 
     if (!mealGroup) {
-      throw new AppError("Refeição não encontrada");
+      throw new AppError("Grupo de Refeição não encontrada");
     }
 
     const meal = mealGroup.meals.find((meal) => meal.id === mealId);
@@ -122,6 +122,33 @@ export async function getMealById(date: string, mealId: string): Promise<Meal> {
     }
 
     return meal;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function updateMeal(meal: Meal) {
+  try {
+    const storage = await AsyncStorage.getItem(MEALS_COLLECTION);
+    const mealParsed: MealGroup[] = storage ? JSON.parse(storage) : [];
+
+    const mealGroupFound = (await getMealByDate(meal.date)) as MealGroup;
+
+    const mealGroupUpdted = {
+      ...mealGroupFound,
+      meals: mealGroupFound.meals.map((mealInGroup) =>
+        mealInGroup.id === meal.id ? meal : mealInGroup
+      ),
+    };
+
+    const updatedMealList = mealParsed.map((group) =>
+      group.date === meal.date ? mealGroupUpdted : group
+    );
+
+    await AsyncStorage.setItem(
+      MEALS_COLLECTION,
+      JSON.stringify(updatedMealList)
+    );
   } catch (error) {
     throw error;
   }

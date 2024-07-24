@@ -5,7 +5,7 @@ export declare global {
       results: undefined;
       "create-meal": undefined;
       "view-meal": { mealId: string; date: string };
-      "edit-meal": { mealId: string };
+      "edit-meal": { mealId: string; date: string };
       "register-meal-done": { variant: "success" | "failure" };
     }
   }

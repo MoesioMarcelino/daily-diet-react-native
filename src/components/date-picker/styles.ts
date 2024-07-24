@@ -11,15 +11,21 @@ export const Label = styled.Text(({ theme }) => ({
   fontSize: theme.SIZES.SM,
 }));
 
-export const ValueContainer = styled.TouchableOpacity.attrs(() => ({
-  activeOpacity: 0.2,
-}))(({ theme }) => ({
+export const ValueContainer = styled.TouchableOpacity.attrs<{
+  edittable?: boolean;
+}>(({ edittable }) => ({
+  activeOpacity: edittable ? 0.2 : 1,
+}))<{ edittable?: boolean }>(({ theme, edittable }) => ({
   borderColor: theme.COLORS.BASE.GRAY_400,
   borderWidth: 1,
   padding: theme.SIZES.SM,
   borderRadius: theme.SIZES.XXS,
   color: theme.COLORS.BASE.GRAY_100,
   fontSize: theme.SIZES.MD,
+
+  ...(!edittable && {
+    backgroundColor: theme.COLORS.BASE.GRAY_400,
+  }),
 }));
 
 export const Value = styled.Text(({ theme }) => ({

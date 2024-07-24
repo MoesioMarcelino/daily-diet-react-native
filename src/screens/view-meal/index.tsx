@@ -36,7 +36,7 @@ export function ViewMeal() {
   }
 
   function handleGoToEditMeal() {
-    navigation.navigate("edit-meal", { mealId });
+    navigation.navigate("edit-meal", { mealId: meal.id, date: meal.date });
   }
 
   function handleDeleteMeal(mustDelete: boolean) {

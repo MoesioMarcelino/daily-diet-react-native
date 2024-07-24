@@ -6,25 +6,78 @@ import {
   Header,
   Input,
 } from "@components";
-import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
-import { View } from "react-native";
+import { Meal } from "@models";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { getMealById, updateMeal } from "@storage";
+import { AppError, formatDateToDDMMYYYY, formatTimeToHHMM } from "@utils";
+import { useEffect, useState } from "react";
+import { Alert, View } from "react-native";
 import { IsInDietLabel } from "./styles";
 
+type RouteParams = {
+  mealId: string;
+  date: string;
+};
+
 export function EditMeal() {
+  const route = useRoute();
   const navigation = useNavigation();
 
-  const [isInDiet, setIsInDiet] = useState(true);
+  const [meal, setMeal] = useState<Meal>({
+    id: "",
+    date: formatDateToDDMMYYYY(new Date()),
+    description: "",
+    time: formatTimeToHHMM(new Date()),
+    inDiet: true,
+    name: "",
+  } as Meal);
+
+  const { mealId, date } = route.params as RouteParams;
 
   function handleGoBack() {
     navigation.goBack();
   }
 
-  function handleSaveMeal() {
-    navigation.navigate("register-meal-done", {
-      variant: isInDiet ? "success" : "failure",
-    });
+  async function handleSaveMeal() {
+    try {
+      await updateMeal(meal);
+      navigation.navigate("register-meal-done", {
+        variant: meal.inDiet ? "success" : "failure",
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
+
+  function handleChangeMealValues(
+    key: keyof typeof meal,
+    value: string | boolean
+  ) {
+    setMeal((oldMeal) => ({
+      ...oldMeal,
+      ...{ [key]: value },
+    }));
+  }
+
+  async function fetchMeal() {
+    try {
+      const fetchedMeal = await getMealById(date, mealId);
+      setMeal(fetchedMeal);
+    } catch (error) {
+      if (error instanceof AppError) {
+        Alert.alert("Editar refeição", error.message, [
+          { text: "OK", onPress: handleGoBack },
+        ]);
+      } else {
+        Alert.alert("Editar refeição", "Não foi possível carregar a refeição.");
+      }
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    fetchMeal();
+  }, []);
 
   return (
     <>
@@ -40,26 +93,32 @@ export function EditMeal() {
           autoCapitalize="words"
           autoCorrect={false}
           enterKeyHint="next"
+          value={meal.name}
+          onChangeText={(text) => handleChangeMealValues("name", text)}
         />
         <Input
           label="Descrição"
           numberOfLines={5}
           multiline
           style={{ textAlignVertical: "top" }}
+          value={meal.description}
+          onChangeText={(text) => handleChangeMealValues("description", text)}
         />
 
         <View style={{ flexDirection: "row", gap: 16 }}>
           <DatePicker
             label="Data"
             mode="date"
-            value={new Date()}
-            valueFormatted="12/08/2022"
+            value={meal.date}
+            edittable={false}
+            valueFormatted={meal.date}
           />
           <DatePicker
             label="Hora"
             mode="time"
-            value={new Date()}
-            valueFormatted="16:00"
+            edittable={false}
+            value={`${meal.date} ${meal.time}`}
+            valueFormatted={meal.time}
           />
         </View>
 
@@ -69,14 +128,14 @@ export function EditMeal() {
             <BadgeCard
               label="Sim"
               variant="success"
-              selected={isInDiet}
-              onPress={() => setIsInDiet(true)}
+              selected={meal.inDiet}
+              onPress={() => handleChangeMealValues("inDiet", true)}
             />
             <BadgeCard
               label="Não"
               variant="failure"
-              selected={!isInDiet}
-              onPress={() => setIsInDiet(false)}
+              selected={!meal.inDiet}
+              onPress={() => handleChangeMealValues("inDiet", false)}
             />
           </View>
         </View>

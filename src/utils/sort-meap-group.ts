@@ -1,9 +1,5 @@
 import { MealGroup } from "@models";
-
-function parseDate(dateStr: string): Date {
-  const [day, month, year] = dateStr.split("/").map(Number);
-  return new Date(year, month - 1, day);
-}
+import { parseDate } from "./format-date";
 
 export function sortMealGroups(mealGroups: MealGroup[]): MealGroup[] {
   return mealGroups
