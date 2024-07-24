@@ -34,7 +34,7 @@ export function Home() {
     try {
       const mealsStoraged = await getAllMeals();
       setMeals(mealsStoraged);
-      const mealDetails = await getMealDetails(mealsStoraged);
+      const mealDetails = await getMealDetails();
       setResult(mealDetails);
     } catch (error) {
       console.error(error);

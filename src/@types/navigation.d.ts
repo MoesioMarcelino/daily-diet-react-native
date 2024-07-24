@@ -4,7 +4,7 @@ export declare global {
       home: undefined;
       results: undefined;
       "create-meal": undefined;
-      "view-meal": { mealId: string };
+      "view-meal": { mealId: string; date: string };
       "edit-meal": { mealId: string };
       "register-meal-done": { variant: "success" | "failure" };
     }

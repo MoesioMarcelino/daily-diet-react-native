@@ -1,6 +1,6 @@
 import { Meal, MealGroup, MealResult, Variant } from "@models";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { calculateDietStats, sortMealGroups } from "@utils";
+import { AppError, calculateDietStats, sortMealGroups } from "@utils";
 import uuid from "react-native-uuid";
 import { MEALS_COLLECTION } from "../contants";
 
@@ -102,6 +102,26 @@ export async function getMealDetails(): Promise<MealResult> {
       variant,
       meals,
     };
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getMealById(date: string, mealId: string): Promise<Meal> {
+  try {
+    const mealGroup = await getMealByDate(date);
+
+    if (!mealGroup) {
+      throw new AppError("Refeição não encontrada");
+    }
+
+    const meal = mealGroup.meals.find((meal) => meal.id === mealId);
+
+    if (!meal) {
+      throw new AppError("Refeição não encontrada");
+    }
+
+    return meal;
   } catch (error) {
     throw error;
   }

@@ -1,7 +1,10 @@
 import { Button, Container, Header, Modal } from "@components";
+import { Meal } from "@models";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { useState } from "react";
-import { View } from "react-native";
+import { getMealById } from "@storage";
+import { AppError } from "@utils";
+import { useEffect, useState } from "react";
+import { Alert, View } from "react-native";
 import {
   BadgeStatusText,
   BagdeContainer,
@@ -15,22 +18,24 @@ import {
 
 type RouteParams = {
   mealId: string;
+  date: string;
 };
 
 export function ViewMeal() {
   const route = useRoute();
   const navigation = useNavigation();
 
-  const [variant, setVariant] = useState<"success" | "failure">("success");
+  const [meal, setMeal] = useState<Meal>({} as Meal);
   const [showModal, setShowModal] = useState(false);
 
-  const { mealId } = route.params as RouteParams;
+  const { mealId, date } = route.params as RouteParams;
+  const variant = meal.inDiet ? "success" : "failure";
 
   function handleGoBack() {
     navigation.navigate("home");
   }
 
-  function handleEditMeal() {
+  function handleGoToEditMeal() {
     navigation.navigate("edit-meal", { mealId });
   }
 
@@ -46,6 +51,24 @@ export function ViewMeal() {
     setShowModal(!showModal);
   }
 
+  async function fetchMeal() {
+    try {
+      const fetchedMeal = await getMealById(date, mealId);
+      setMeal(fetchedMeal);
+    } catch (error) {
+      if (error instanceof AppError) {
+        Alert.alert("Exibir refeição", error.message);
+      } else {
+        Alert.alert("Exibir refeição", "Não foi possível carregar a refeição.");
+      }
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    fetchMeal();
+  }, []);
+
   return (
     <>
       <Header title="Refeição" variant={variant} onGoBack={handleGoBack} />
@@ -57,12 +80,14 @@ export function ViewMeal() {
 
       <Container style={{ gap: 24 }}>
         <TextContainer>
-          <Title>X-tudo</Title>
-          <Description>Xis completo da lancheria do bairro</Description>
+          <Title>{meal.name}</Title>
+          <Description>{meal.description}</Description>
         </TextContainer>
         <TextContainer>
           <DateAndHourLabel>Data e hora</DateAndHourLabel>
-          <DateAndHourText>12/08/2022 às 20:00</DateAndHourText>
+          <DateAndHourText>
+            {meal.date} às {meal.time}
+          </DateAndHourText>
         </TextContainer>
         <BagdeContainer>
           <BagdeStatus variant={variant} />
@@ -74,7 +99,7 @@ export function ViewMeal() {
           <Button
             label="Editar refeição"
             icon="edit"
-            onPress={handleEditMeal}
+            onPress={handleGoToEditMeal}
           />
           <Button
             label="Excluir refeição"

@@ -14,8 +14,9 @@ export type MealCardProps = Meal & TouchableOpacityProps;
 
 export function MealCard({
   time,
-  name: title,
+  name,
   inDiet,
+  date,
   id,
   ...rest
 }: MealCardProps) {
@@ -24,6 +25,7 @@ export function MealCard({
   function handleViewMeal() {
     navigation.navigate("view-meal", {
       mealId: id,
+      date,
     });
   }
 
@@ -32,7 +34,7 @@ export function MealCard({
       <ContentContainer>
         <Time>{time}</Time>
         <Divider />
-        <Title numberOfLines={1}>{title}</Title>
+        <Title numberOfLines={1}>{name}</Title>
       </ContentContainer>
       <Status inDiet={inDiet} />
     </Container>
