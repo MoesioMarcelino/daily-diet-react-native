@@ -95,17 +95,20 @@ export function CreateMeal() {
           label="Nome"
           autoCapitalize="sentences"
           autoCorrect={false}
-          enterKeyHint="next"
+          returnKeyType="done"
           value={formulary.name}
           onChangeText={(text) => changeFormularyValue("name", text)}
+          onSubmitEditing={handleSaveMeal}
         />
         <Input
           label="Descrição"
           numberOfLines={5}
           multiline
           style={{ textAlignVertical: "top" }}
+          returnKeyType="done"
           value={formulary.description}
           onChangeText={(text) => changeFormularyValue("description", text)}
+          onSubmitEditing={handleSaveMeal}
         />
 
         <View style={{ flexDirection: "row", gap: 16 }}>

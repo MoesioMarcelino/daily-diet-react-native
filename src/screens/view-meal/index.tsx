@@ -1,7 +1,7 @@
 import { Button, Container, Header, Modal } from "@components";
 import { Meal } from "@models";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { getMealById } from "@storage";
+import { deleteMeal, getMealById } from "@storage";
 import { AppError } from "@utils";
 import { useEffect, useState } from "react";
 import { Alert, View } from "react-native";
@@ -39,9 +39,18 @@ export function ViewMeal() {
     navigation.navigate("edit-meal", { mealId: meal.id, date: meal.date });
   }
 
-  function handleDeleteMeal(mustDelete: boolean) {
-    if (mustDelete) {
+  async function deleteMealAction() {
+    try {
+      await deleteMeal(meal);
       handleGoBack();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function handleDeleteMeal(mustDelete: boolean) {
+    if (mustDelete) {
+      deleteMealAction();
     }
 
     handleToggleModal();

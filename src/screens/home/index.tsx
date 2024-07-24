@@ -33,6 +33,7 @@ export function Home() {
   async function fetchMeals() {
     try {
       const mealsStoraged = await getAllMeals();
+      console.log("MEALS STORAGED", mealsStoraged);
       setMeals(mealsStoraged);
       const mealDetails = await getMealDetails();
       setResult(mealDetails);
@@ -43,9 +44,12 @@ export function Home() {
 
   useFocusEffect(
     useCallback(() => {
+      console.log("passando aqui");
       fetchMeals();
     }, [])
   );
+
+  // console.log("meals", JSON.stringify(meals));
 
   return (
     <>

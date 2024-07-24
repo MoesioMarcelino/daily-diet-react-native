@@ -61,7 +61,10 @@ export function DatePicker({
         />
       )}
 
-      <ValueContainer onPress={edittable ? handlePressInput : undefined}>
+      <ValueContainer
+        edittable={edittable}
+        onPress={edittable ? handlePressInput : undefined}
+      >
         <Value>{valueFormatted}</Value>
       </ValueContainer>
     </Container>

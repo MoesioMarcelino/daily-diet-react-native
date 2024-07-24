@@ -153,3 +153,35 @@ export async function updateMeal(meal: Meal) {
     throw error;
   }
 }
+
+export async function deleteMeal(meal: Meal): Promise<void> {
+  try {
+    const meals = await getAllMeals();
+
+    const mealGroupFound = (await getMealByDate(meal.date)) as MealGroup;
+
+    if (mealGroupFound.meals.length > 1) {
+      mealGroupFound.meals = mealGroupFound.meals.filter(
+        ({ id }) => id !== meal.id
+      );
+
+      const updatedMealGroupList = meals.map((group) =>
+        group.date === meal.date ? mealGroupFound : group
+      );
+
+      await AsyncStorage.setItem(
+        MEALS_COLLECTION,
+        JSON.stringify(updatedMealGroupList)
+      );
+    } else {
+      const updatedMealGroup = meals.filter(({ date }) => date !== meal.date);
+
+      await AsyncStorage.setItem(
+        MEALS_COLLECTION,
+        JSON.stringify(updatedMealGroup)
+      );
+    }
+  } catch (error) {
+    throw error;
+  }
+}
